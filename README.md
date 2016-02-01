@@ -7,6 +7,7 @@ Dead-easy usage:
   whenDefined(objectName, functionNameMustReturnTrue).then(doSmth, doSmthElse);
   ```
 Examples: </br>
-whenDefined("ko").then(function(){alert( "knockout.js is loaded"); }); <br/>
+```javascript
+whenDefined("ko").then(function(){alert( "knockout.js is loaded"); });  
 whenDefined("ko", "isOddMonth").then(function(){alert( "knockout.js is loaded and it is an odd month!"); });
-
+ ```

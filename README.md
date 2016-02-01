@@ -1,5 +1,5 @@
 # whenDefined.js
-A simple way to check object/ library/ function availability and trigger promises. With the second parameter one can ensure that the promise resolves only if a method returns true. Uses jQuery promises.
+A simple way to check object/ library/ function availability and trigger promises. With the <i>second parameter</i> one can ensure that the promise resolves only if a method returns true. Uses jQuery promises.
 
 Dead-easy usage:
   ```javascript

@@ -10,6 +10,5 @@ Dead-easy usage:
 Examples: </br>
 ```javascript
 whenDefined("ko").then(function(){alert( "knockout.js is loaded"); }); 
-
-whenDefined("myLibrary", "myLibrary.isOddMonth").then(function(){alert( "myLibrary is loaded and it is an odd month!"); });
+whenDefined("myLibrary", "myLibrary.isOddMonth").then(function(){alert( "myLibrary is loaded & it's an odd month"); });
  ```

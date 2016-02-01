@@ -1,4 +1,5 @@
-# whenDefined
+# whenDefined.js
+A simple way to check object/ library/ function availability and trigger promises. Uses jQuery promises.
 
 Dead-easy usage:
   ```javascript

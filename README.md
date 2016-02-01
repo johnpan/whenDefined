@@ -15,7 +15,7 @@ With the <b>second parameter</b> you can ensure that the promise resolves only i
 Examples: </br>
 ```javascript
 whenDefined("ko").then(function(){alert( "knockout.js is loaded"); }); 
-whenDefined("myLibrary", "myLibrary.isOddMonth").then(function(){alert( "myLibrary is loaded & it's an odd month"); });
+whenDefined("myLibrary", "myLibrary.isOddMonth").then(function(){alert( "myLibrary says it's an odd month"); });
 ```
 
 You can group promises as usual, using $.when

@@ -1,5 +1,5 @@
 # whenDefined.js
-A simple way to check object/ library/ function availability and trigger promises. Uses jQuery promises. Promises will be rejected after one and a half minutes, and you can change that by altering the <i>window.whenDefined_timeOutLimit</i> variable
+A tiny library for Featue Detection and Object Detection. In other words, it provides a simple way to check object/ library/ function availability and trigger jQuery promises. Promises will be rejected after one and a half minutes, and you can change that by altering the <i>window.whenDefined_timeOutLimit</i> variable
 
 Dead-easy usage:
   ```javascript
@@ -15,12 +15,12 @@ With the <b>second parameter</b> you can ensure that the promise resolves only i
 Examples: </br>
 ```javascript
 whenDefined("ko").then(function(){alert( "knockout.js is loaded"); }); 
-whenDefined("myLibrary", "myLibrary.isOddMonth").then(function(){alert( "myLibrary says it's an odd month"); });
+whenDefined("myLib", "myLib.isOddMonth").then(function(){alert( "myLibrary says it's an odd month"); });
 ```
 
 You can group promises as usual, using $.when
 ```javascript
-$.when( whenDefined("coolLibrary"), whenDefined("niceLibrary") ).then(doSmthFn);
+$.when( whenDefined("coolLibrary"), whenDefined("niceLibrary") ).then(doSmthNiceNcool);
 ```
 
 You can bind promises with nested syntax

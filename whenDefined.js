@@ -9,13 +9,14 @@
 		return ("undefined" == typeof eval("window." + objName));
 	}
 
-	function check(o, f) {
-		if ((f &&
-				(o === true || !isUndefined(o)) &&
-				'function' == typeof eval("window." + f) &&
-				eval("window." + f + "();")) ||
-			(!isUndefined(o) &&
-				!f)) {
+	function check(obj, fn) {
+		// obj must exist or must be True, fn must be function that retruns true
+		if ((fn &&
+				(obj === true || !isUndefined(obj)) &&
+				'function' == typeof eval("window." + fn) &&
+				eval("window." + fn + "();")) ||
+			(!isUndefined(obj) &&
+				!fn)) {
 			return true;
 		}
 		return false;

@@ -3,15 +3,20 @@
 
 	var
 	whenDefined,
-	whenDefined_version = "0.0.2";
+	whenDefined_version = "0.0.3";
+
+	function isUndefined(objName) {
+		return ("undefined" == typeof eval("window." + objName));
+	}
 
 	function check(o, f) {
-		if (f) {
-			if ((o === true || eval("window." + o)) && 'function' == typeof eval("window." + f) && eval("window." + f + "();"))
-				return true;
-		} else {
-			if (eval("window." + o))
-				return true;
+		if ((f &&
+				(o === true || !isUndefined(o)) &&
+				'function' == typeof eval("window." + f) &&
+				eval("window." + f + "();")) ||
+			(!isUndefined(o) &&
+				!f)) {
+			return true;
 		}
 		return false;
 	}
@@ -23,14 +28,11 @@
 				var obj = promiseContainer.tests[0];
 				var fn = promiseContainer.tests[1];
 				if (check(obj, fn)) {
-					// console.log("resolving: " + obj)
-					whenDefined_promises
-					.findObjects("library", obj)[0]
+					findObjects(whenDefined_promises, "library", obj)[0]
 					.promiseInstance
 					.resolve(true);
 				} else if (Date.now() - promiseContainer.requestedAt > window.whenDefined_timeOutLimit) {
-					whenDefined_promises
-					.findObjects("library", obj)[0]
+					findObjects(whenDefined_promises, "library", obj)[0]
 					.promiseInstance
 					.reject("timeout");
 				} else {
@@ -47,7 +49,7 @@
 			// missed some promises while looping with map
 			for (var i = lengthBeforeCheck; i < whenDefined_promises.length; i++) {
 				checkedPromisesArr.push(whenDefined_promises[i]);
-				// say("pushed missed: " + whenDefined_promises[i].library)
+				//console.log("pushed missed: " + whenDefined_promises[i].library)
 			}
 			whenDefined_promises = checkedPromisesArr;
 		}
@@ -57,6 +59,19 @@
 			// force re-init next time
 			whenDefined_promises = null;
 		}
+	}
+
+	function findObjects(arr, prop, val) {
+		// function returns an array with the found object(s) or an empty array
+		if (!arr || !arr[0])
+			return [];
+		if (!arr[0][prop]) {
+			// no such property
+			return [];
+		}
+		return arr.filter(function (pairItem) {
+			return (pairItem[prop] == val || pairItem[prop].indexOf(val) > -1);
+		});
 	}
 
 	function whenDefined(mustExist, mustReturnTrue) {
@@ -71,44 +86,28 @@
 		};
 
 		function init() {
-			// say("initializing whenDefined");
-			if (!Array.prototype.findObjects) {
-				Array.prototype.findObjects = function (prop, val) {
-					// function returns an array with the found object(s) or an empty array
-					// needs optimization. Add a parameter for exact much OR indexOf
-					if (!this || !this[0])
-						return [];
-					if (!this[0][prop]) {
-						console.log("no such property");
-						return [];
-					}
-					return this.filter(function (pairItem) {
-						if (pairItem[prop] == val)
-							return true;
-						if (pairItem[prop].indexOf(val) > -1)
-							return true;
-					});
-				}
-			}
+			// next two values are OK to modify
+			window.whenDefined_timeOutLimit = 1 * minute + 30 * second;
+			window.whenDefined_intervalCycle = 0.5 * second;
+			//
 			window.whenDefined_promises = [];
 			window.whenDefined_loadingTimeout = 0;
-			window.whenDefined_timeOutLimit = 1 * minute + 30 * second;
 			window.whenDefined_checkDefinitions = checkDefinitions;
-			whenDefined_loadingTimeout = setInterval(whenDefined_checkDefinitions, 500);
+			whenDefined_loadingTimeout = setInterval(whenDefined_checkDefinitions, window.whenDefined_intervalCycle);
 		}
 
 		// init array of promises if not there
 		if (!window.whenDefined_promises)
 			init();
 		// look for stored promise request
-		var promiseContainer = whenDefined_promises.findObjects("library", thisPromiseRequest.library)[0];
+		var promiseContainer = findObjects(whenDefined_promises, "library", thisPromiseRequest.library)[0];
 		if (promiseContainer) {
 			// found promise so just return it
 			return promiseContainer.promiseInstance.promise();
 		} else {
 			// push promise request and return promise()
 			thisPromiseRequest.promiseInstance = new $.Deferred();
-			// say("pushing:",thisPromiseRequest)
+			//console.log("pushing:", thisPromiseRequest)
 			whenDefined_promises.push(thisPromiseRequest);
 			return thisPromiseRequest.promiseInstance.promise();
 		}

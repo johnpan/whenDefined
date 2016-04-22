@@ -5,23 +5,6 @@
 	whenDefined,
 	whenDefined_version = "0.0.3";
 
-	function isUndefined(objName) {
-		return ("undefined" == typeof eval("window." + objName));
-	}
-
-	function check(obj, fn) {
-		// obj must exist or must be True, fn must be function that retruns true
-		if ((fn &&
-				(obj === true || !isUndefined(obj)) &&
-				'function' == typeof eval("window." + fn) &&
-				eval("window." + fn + "();")) ||
-			(!isUndefined(obj) &&
-				!fn)) {
-			return true;
-		}
-		return false;
-	}
-
 	function checkDefinitions() {
 		var lengthBeforeCheck = whenDefined_promises.length;
 		// check resolve/reject
@@ -114,6 +97,24 @@
 		}
 	}
 
+	
+	function isUndefined(objName) {
+		return ("undefined" == typeof eval("window." + objName));
+	}
+
+	function check(obj, fn) {
+		// obj must exist or must be True, fn must be function that retruns true
+		if ((fn &&
+				(obj === true || !isUndefined(obj)) &&
+				'function' == typeof eval("window." + fn) &&
+				eval("window." + fn + "();")) ||
+			(!isUndefined(obj) &&
+				!fn)) {
+			return true;
+		}
+		return false;
+	}
+	
 	// liberate / expose to scope
 	window.whenDefined = whenDefined;
 }
